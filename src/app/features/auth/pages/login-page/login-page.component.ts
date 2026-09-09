@@ -35,10 +35,13 @@ import { AuthSessionService } from '@core/auth/auth-session.service';
 
       <form (ngSubmit)="onSubmit()" class="grid gap-3">
         <div>
-          <label class="mb-1 block text-xs font-semibold text-[#333333]"> Work Email </label>
+          <label for="email" class="mb-1 block text-xs font-semibold text-[#333333]">
+            Work Email
+          </label>
           <nz-input-group [nzPrefix]="mailIcon">
             <input
               nz-input
+              id="email"
               type="email"
               [(ngModel)]="email"
               name="email"
@@ -54,7 +57,7 @@ import { AuthSessionService } from '@core/auth/auth-session.service';
 
         <div>
           <div class="mb-1 flex items-center justify-between">
-            <label class="text-xs font-semibold text-[#333333]"> Password </label>
+            <label for="password" class="text-xs font-semibold text-[#333333]"> Password </label>
             <a href="javascript:void(0)" class="text-xs text-[#1350DF] hover:underline">
               Forgot password?
             </a>
@@ -62,6 +65,7 @@ import { AuthSessionService } from '@core/auth/auth-session.service';
           <nz-input-group [nzPrefix]="lockIcon">
             <input
               nz-input
+              id="password"
               type="password"
               [(ngModel)]="password"
               name="password"

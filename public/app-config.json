@@ -1,0 +1,9 @@
+{
+  "apiBaseUrl": "https://api.example.internal",
+  "authTransport": "cookie",
+  "externalActivityUrl": "https://api.github.com/events",
+  "environmentName": "development",
+  "requestTimeoutMs": 15000,
+  "secureStorageNamespace": "frontend-starter",
+  "trustedInternalOrigins": ["https://api.example.internal"]
+}

@@ -1,0 +1,284 @@
+@import 'tailwindcss';
+
+:root {
+  color-scheme: light;
+  font-family:
+    Lato,
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
+  background-color: #f9f9f9;
+  color: #101828;
+
+  --app-bg: #f9f9f9;
+  --app-surface: #ffffff;
+  --app-surface-soft: #ebf5ff;
+  --app-border: #d2d2d2;
+  --app-border-strong: #787676;
+  --app-text-primary: #101828;
+  --app-text-secondary: #333333;
+  --app-text-muted: #787676;
+  --app-primary: #1350df;
+  --app-primary-strong: #111098;
+  --app-primary-soft: #ebf5ff;
+  --app-primary-border: #b8dbff;
+  --app-info: #42bef5;
+  --app-success: #52c73f;
+  --app-danger: #f24150;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background-color: var(--app-bg);
+  color: var(--app-text-primary);
+}
+
+a {
+  color: inherit;
+}
+
+button[nz-button],
+.ant-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.375rem;
+  border-radius: 0.5rem;
+  vertical-align: middle;
+}
+
+button[nz-button] > svg,
+.ant-btn > svg,
+.ant-btn > .anticon,
+.ant-btn > span {
+  display: inline-block;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+button[nz-button] > span,
+.ant-btn > span {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1.2;
+}
+
+.ant-card-actions > li > span {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 2.75rem;
+}
+
+.ant-card-actions > li > span > a,
+.ant-card-actions > li > span > button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.375rem;
+  line-height: 1.2;
+}
+
+.ant-tag {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.25rem;
+  line-height: 1.25 !important;
+  vertical-align: middle;
+}
+
+.ant-tag > svg,
+.ant-tag > .anticon {
+  flex-shrink: 0;
+}
+
+.app-user-menu-list .ant-menu-item {
+  display: flex !important;
+  align-items: center !important;
+  height: auto !important;
+  margin: 0;
+  line-height: 1.25;
+}
+
+.app-user-menu-list .ant-menu-title-content {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.5rem;
+  min-width: 0;
+  line-height: 1.25;
+}
+
+.app-user-menu-list .ant-menu-item svg {
+  flex-shrink: 0;
+}
+
+.app-user-menu-list .ant-menu-item span {
+  white-space: nowrap;
+}
+
+.ant-btn-primary {
+  background: var(--app-primary) !important;
+  border-color: var(--app-primary) !important;
+  color: #ffffff !important;
+}
+
+.ant-btn-primary:hover,
+.ant-btn-primary:focus-visible {
+  background: var(--app-primary-strong) !important;
+  border-color: var(--app-primary-strong) !important;
+}
+
+.ant-btn-default:hover,
+.ant-btn-default:focus-visible,
+.ant-btn-dashed:hover,
+.ant-btn-dashed:focus-visible {
+  border-color: var(--app-primary) !important;
+  color: var(--app-primary) !important;
+}
+
+.ant-card,
+.ant-drawer-content,
+.ant-modal-content,
+.ant-dropdown-menu {
+  background: var(--app-surface) !important;
+  color: var(--app-text-primary) !important;
+  border-color: var(--app-border) !important;
+  box-shadow: none !important;
+}
+
+.ant-card-head,
+.ant-drawer-header,
+.ant-modal-header {
+  color: var(--app-text-primary) !important;
+  border-bottom-color: var(--app-border) !important;
+}
+
+.ant-modal-title,
+.ant-drawer-title {
+  color: var(--app-text-primary) !important;
+}
+
+.ant-table {
+  background: var(--app-surface) !important;
+  color: var(--app-text-primary) !important;
+}
+
+.ant-table-thead > tr > th {
+  background: var(--app-primary-soft) !important;
+  color: var(--app-primary-strong) !important;
+  border-bottom-color: var(--app-primary-border) !important;
+}
+
+.ant-table-tbody > tr > td {
+  border-bottom-color: var(--app-border) !important;
+}
+
+.ant-table-tbody > tr:hover > td {
+  background: #f9f9f9 !important;
+}
+
+.ant-input,
+.ant-input-number,
+.ant-select-selector {
+  border-color: var(--app-border) !important;
+  color: var(--app-text-primary) !important;
+}
+
+.ant-input:hover,
+.ant-input:focus,
+.ant-input-number:hover,
+.ant-input-number-focused,
+.ant-select-focused .ant-select-selector,
+.ant-select-selector:hover {
+  border-color: var(--app-primary) !important;
+  outline: 2px solid rgb(19 80 223 / 14%) !important;
+  outline-offset: 0;
+  box-shadow: none !important;
+}
+
+.ant-card {
+  border-radius: 0.5rem !important;
+}
+
+.ant-card-body {
+  padding: 1rem !important;
+}
+
+.ant-card-head {
+  min-height: 2.75rem !important;
+  padding: 0 1rem !important;
+}
+
+.ant-card-head-title,
+.ant-card-extra {
+  padding: 0.75rem 0 !important;
+}
+
+.ant-drawer-body {
+  padding: 1rem !important;
+}
+
+.ant-table-wrapper {
+  overflow-x: auto;
+}
+
+.ant-table {
+  min-width: 640px;
+}
+
+.ant-alert-info {
+  border-color: var(--app-info) !important;
+  background: #ebf5ff !important;
+}
+
+.ant-alert-success {
+  border-color: var(--app-success) !important;
+}
+
+.ant-alert-error {
+  border-color: var(--app-danger) !important;
+}
+
+.ant-tag-processing,
+.ant-tag-blue {
+  border-color: var(--app-primary-border) !important;
+  background: var(--app-primary-soft) !important;
+  color: var(--app-primary-strong) !important;
+}
+
+.ant-tag-success,
+.ant-tag-green {
+  border-color: rgb(82 199 63 / 30%) !important;
+  background: rgb(82 199 63 / 10%) !important;
+  color: #247a1c !important;
+}
+
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  .print\:hidden,
+  header,
+  aside,
+  footer,
+  app-header,
+  app-navigation,
+  app-footer {
+    display: none !important;
+  }
+
+  .print\:border-none {
+    border: none !important;
+  }
+
+  .print\:p-0 {
+    padding: 0 !important;
+  }
+}

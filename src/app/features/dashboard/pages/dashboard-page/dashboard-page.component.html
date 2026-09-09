@@ -1,0 +1,19 @@
+<section class="grid gap-4">
+  <div>
+    <p class="m-0 text-sm font-semibold uppercase tracking-[0.12em] text-[#787676]">Starter</p>
+    <h2 class="m-0 text-xl font-semibold text-[#101828]">Dashboard</h2>
+  </div>
+
+  @if (dashboardState.loading()) {
+    <nz-skeleton [nzActive]="true" />
+  } @else if (dashboardState.error()) {
+    <nz-alert nzType="error" [nzMessage]="dashboardState.error() ?? ''" />
+  } @else if (dashboardState.summary(); as summary) {
+    <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+      <app-status-card label="Active users" [value]="summary.activeUsers" detail="Signals" />
+      <app-status-card label="Open projects" [value]="summary.openProjects" detail="Local state" />
+      <app-status-card label="Coverage" [value]="summary.testCoverage" detail="Quality gate" />
+      <app-status-card label="Security" [value]="summary.securityStatus" detail="Defaults" />
+    </div>
+  }
+</section>

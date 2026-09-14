@@ -21,7 +21,9 @@
     "generate:component": "node scripts/starter-cli.mjs component",
     "generate:service": "node scripts/starter-cli.mjs service",
     "generate:state": "node scripts/starter-cli.mjs state",
-    "openapi:generate": "node scripts/generate-openapi.mjs"
+    "openapi:generate": "node scripts/generate-openapi.mjs",
+    "api:import": "node scripts/starter-cli.mjs import-api",
+    "api:update": "node scripts/starter-cli.mjs update-api"
   },
   "private": true,
   "packageManager": "npm@12.0.2",

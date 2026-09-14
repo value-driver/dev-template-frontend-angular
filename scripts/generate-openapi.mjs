@@ -2,12 +2,14 @@ import { existsSync, mkdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 
-const spec = resolve(process.env.OPENAPI_SPEC ?? 'openapi/openapi.yaml');
+const rawSpec = process.env.OPENAPI_SPEC ?? 'openapi/openapi.yaml';
+const isUrl = /^https?:\/\//i.test(rawSpec);
+const spec = isUrl ? rawSpec : resolve(rawSpec);
 const output = resolve('src/app/generated/api-schema.ts');
 
-if (!existsSync(spec)) {
+if (!isUrl && !existsSync(spec)) {
   console.error(
-    `OpenAPI specification not found: ${spec}\nSet OPENAPI_SPEC to a local file or add openapi/openapi.yaml.`,
+    `OpenAPI specification not found: ${spec}\nSet OPENAPI_SPEC to a local file, a remote URL, or add openapi/openapi.yaml.`,
   );
   process.exit(1);
 }

@@ -1,6 +1,6 @@
 import { execSync } from 'node:child_process';
 
-console.log('\x1b[35m%s\x1b[0m', '[DOCTOR] Running Enterprise Frontend Doctor Health Check...\n');
+console.log('\x1b[35m%s\x1b[0m', 'DOCTOR: Running Enterprise Frontend Doctor Health Check...\n');
 
 let allPassed = true;
 

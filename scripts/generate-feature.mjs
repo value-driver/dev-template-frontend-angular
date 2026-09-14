@@ -1,6 +1,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { createInterface } from 'node:readline';
+import { execSync } from 'node:child_process';
 
 function toKebabCase(str) {
   return str
@@ -37,6 +38,16 @@ function ask(rl, question) {
   });
 }
 
+function formatFiles(...fileOrDirPaths) {
+  try {
+    const prettierBin = join(process.cwd(), 'node_modules', 'prettier', 'bin', 'prettier.cjs');
+    if (existsSync(prettierBin)) {
+      const targets = fileOrDirPaths.map((p) => `"${p}"`).join(' ');
+      execSync(`node "${prettierBin}" --write ${targets}`, { stdio: 'ignore' });
+    }
+  } catch {}
+}
+
 function autoRegisterRoute(featureName, pascalName, upperName, titleName) {
   const routesPath = join(process.cwd(), 'src', 'app', 'app.routes.ts');
   if (!existsSync(routesPath)) {
@@ -46,7 +57,7 @@ function autoRegisterRoute(featureName, pascalName, upperName, titleName) {
   let content = readFileSync(routesPath, 'utf8');
 
   if (content.includes(`path: '${featureName}'`)) {
-    console.log(`[INFO] Route '${featureName}' is already registered in app.routes.ts`);
+    console.log(`INFO: Route '${featureName}' is already registered in app.routes.ts`);
     return;
   }
 
@@ -71,7 +82,7 @@ function autoRegisterRoute(featureName, pascalName, upperName, titleName) {
     if (endIdx !== -1) {
       content = content.slice(0, endIdx) + routeBlock + '\n' + content.slice(endIdx);
       writeFileSync(routesPath, content, 'utf8');
-      console.log(`[AUTO-ROUTE] Registered lazy route '/${featureName}' in src/app/app.routes.ts`);
+      console.log(`AUTO-ROUTE: Registered lazy route '/${featureName}' in src/app/app.routes.ts`);
     }
   }
 }
@@ -89,7 +100,7 @@ export function generateFeatureSlice(rawName) {
   const featureRoot = join(process.cwd(), 'src', 'app', 'features', name);
 
   if (existsSync(featureRoot)) {
-    console.error(`[ERROR] Feature "${name}" already exists at ${featureRoot}`);
+    console.error(`ERROR: Feature "${name}" already exists at ${featureRoot}`);
     return;
   }
 
@@ -158,6 +169,7 @@ import { of } from 'rxjs';
 import { describe, expect, it, beforeEach } from 'vitest';
 
 import { ApiClient } from '@core/http/api-client/api-client.service';
+import { ${pascalName} } from '@features/${name}/models/${name}.models';
 import { ${pascalName}ApiService } from './${name}-api.service';
 
 describe('${pascalName}ApiService', () => {
@@ -489,6 +501,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 
 import { ToastService } from '@core/feedback/toast.service';
+import { ${pascalName} } from '@features/${name}/models/${name}.models';
 import { ${pascalName}StateService } from '@features/${name}/state/${name}-state.service';
 
 @Component({
@@ -698,6 +711,7 @@ export const ${upperName}_ROUTES: Routes = [
 
   console.log(`[SUCCESS] Generated complete CRUD feature slice for '${name}'!`);
   autoRegisterRoute(name, pascalName, upperName, titleName);
+  formatFiles(featureRoot, join(process.cwd(), 'src', 'app', 'app.routes.ts'));
 }
 
 export function generatePageComponent(featureName, pageName) {
@@ -710,7 +724,6 @@ export function generatePageComponent(featureName, pageName) {
   mkdirSync(targetDir, { recursive: true });
 
   const componentContent = `import { Component, inject, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCardModule } from 'ng-zorro-antd/card';
 
@@ -718,7 +731,7 @@ import { ToastService } from '@core/feedback/toast.service';
 
 @Component({
   selector: 'app-${pName}-page',
-  imports: [RouterLink, NzCardModule, NzButtonModule],
+  imports: [NzCardModule, NzButtonModule],
   template: \`
     <div class="grid gap-6">
       <header>
@@ -768,6 +781,7 @@ describe('${pascalName}PageComponent', () => {
   console.log(
     `[SUCCESS] Generated page component at src/app/features/${fName}/pages/${pName}-page/`,
   );
+  formatFiles(targetDir);
 }
 
 export function generateUiComponent(featureName, componentName) {
@@ -825,6 +839,7 @@ describe('${pascalName}Component', () => {
   console.log(
     `[SUCCESS] Generated presentation UI component at src/app/features/${fName}/ui/${cName}/`,
   );
+  formatFiles(targetDir);
 }
 
 export function generateService(featureName, serviceName) {
@@ -881,6 +896,10 @@ describe('${pascalName}ApiService', () => {
   writeFileSync(join(targetDir, `${sName}-api.service.spec.ts`), specContent, 'utf8');
   console.log(
     `[SUCCESS] Generated data-access service at src/app/features/${fName}/data-access/${sName}-api.service.ts`,
+  );
+  formatFiles(
+    join(targetDir, `${sName}-api.service.ts`),
+    join(targetDir, `${sName}-api.service.spec.ts`),
   );
 }
 
@@ -949,6 +968,10 @@ describe('${pascalName}StateService', () => {
   console.log(
     `[SUCCESS] Generated signal state service at src/app/features/${fName}/state/${sName}-state.service.ts`,
   );
+  formatFiles(
+    join(targetDir, `${sName}-state.service.ts`),
+    join(targetDir, `${sName}-state.service.spec.ts`),
+  );
 }
 
 async function runInteractiveCli() {
@@ -967,9 +990,10 @@ async function runInteractiveCli() {
   console.log('  4) Data-Access API Service (Typed CRUD methods with ApiClient + Spec)');
   console.log('  5) Feature State Service (Typed State + Spec)');
   console.log('  6) Run Architecture & Environment Doctor');
+  console.log('  7) Import / Update API (Swagger / OpenAPI / Postman -> Endpoints & Types)');
   console.log('  0) Exit\n');
 
-  const choice = await ask(rl, 'Select an option (0-6): ');
+  const choice = await ask(rl, 'Select an option (0-7): ');
 
   switch (choice.trim()) {
     case '1': {
@@ -1008,6 +1032,20 @@ async function runInteractiveCli() {
       } catch {}
       break;
     }
+    case '7': {
+      const { runApiImport } = await import('./api-importer.mjs');
+      const metaFile = join(process.cwd(), 'openapi', 'api-source.json');
+      let defaultHint = '';
+      if (existsSync(metaFile)) {
+        try {
+          const saved = JSON.parse(readFileSync(metaFile, 'utf8'));
+          if (saved.source) defaultHint = ` [Enter for saved: ${saved.source}]`;
+        } catch {}
+      }
+      const source = await ask(rl, `API Specification URL or File Path${defaultHint}: `);
+      await runApiImport(source);
+      break;
+    }
     case '0':
     default:
       console.log('Exiting CLI.');
@@ -1022,6 +1060,13 @@ const command = args[0];
 
 if (!command) {
   runInteractiveCli();
+} else if (command === 'import-api' || command === 'api:import') {
+  const sourceArg = args.find((a) => a.startsWith('--source='))?.split('=')[1] || args[1];
+  const { runApiImport } = await import('./api-importer.mjs');
+  await runApiImport(sourceArg);
+} else if (command === 'update-api' || command === 'api:update') {
+  const { runApiImport } = await import('./api-importer.mjs');
+  await runApiImport(null);
 } else if (command === 'feature') {
   const name = args[1];
   if (!name) {
